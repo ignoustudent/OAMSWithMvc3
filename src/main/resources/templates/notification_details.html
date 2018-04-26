@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org" class="global xlarge">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>AdminLTE 2 | Starter</title>
+<!-- Tell the browser to be responsive to screen width -->
+<meta
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+	name="viewport">
+<link rel="stylesheet" th:href="@{../css/bootstrap.min.css}">
+<link rel="stylesheet" th:href="@{../css/bootstrap-theme.min.css}">
+
+<script th:src="@{../js/jquery.min.js}"></script>
+<script th:src="@{../js/bootstrap.min.js}"></script>
+<link rel="stylesheet" th:href="@{../css/font-awesome.min.css}">
+<!-- Ionicons -->
+<link rel="stylesheet" th:href="@{../css/ionicons.min.css}">
+<!-- Theme style -->
+<link rel="stylesheet" th:href="@{../css/AdminLTE.min.css}">
+<link rel="stylesheet" th:href="@{../css/skin-blue.min.css}">
+<link rel="stylesheet" th:href="@{../css/jquery.dataTables.min.css}">
+
+<style>
+@media ( min-width : 600px) {
+	.container {
+		max-width: 770px;
+	}
+}
+
+.success-div {
+	background-color: #00a65a;
+}
+</style>
+
+<!-- Google Font -->
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+</head>
+<!--
+BODY TAG OPTIONS:
+=================
+Apply one or more of the following classes to get the
+desired effect
+|---------------------------------------------------------|
+| SKINS         | skin-blue                               |
+|               | skin-black                              |
+|               | skin-purple                             |
+|               | skin-yellow                             |
+|               | skin-red                                |
+|               | skin-green                              |
+|---------------------------------------------------------|
+|LAYOUT OPTIONS | fixed                                   |
+|               | layout-boxed                            |
+|               | layout-top-nav                          |
+|               | sidebar-collapse                        |
+|               | sidebar-mini                            |
+|---------------------------------------------------------|
+-->
+<body class="hold-transition skin-blue sidebar-mini">
+	<div class="wrapper">
+
+
+
+		<header class="main-header">
+			<div th:include="fragments/secure_header :: header"></div>
+			<!-- Logo -->
+
+		</header>
+		<aside class="main-sidebar"
+			th:include="fragments/secure_leftslider :: left"></aside>
+		<section>
+			<!-- Content Wrapper. Contains page content -->
+			<div class="content-wrapper">
+				<!-- Content Header (Page header) -->
+				<section class="content-header">
+					<h1>
+						<!-- Please Select :- Hospital and Department -->
+						<!-- <small>Hospital and  Department</small> -->
+						<div class="alert success-div" role="alert" id="success_message"
+							background-color="green">
+							<b>Notification Details</b>
+						</div>
+					</h1>
+					<!-- <ol class="breadcrumb">
+					<li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
+					<li class="active">Here</li>
+				</ol> -->
+				</section>
+
+				<!-- Main content -->
+				<section class="content container-fluid">
+				
+				<form class="well form-horizontal" style="margin-right:20%" autocomplete="off" action="#"
+						th:action="@{/notification/add}"
+						th:object="${notification}" th:role="form" method="post"
+						enctype="multipart/form-data">
+						
+						<div th:if="${msg != null}" style="color:#00a65a;">
+							<h4 th:text="${msg}"></h4> 
+							</div>
+							
+							<th:block th:if="${error !=null}">
+							<h4 style="color:red" th:text="${error}"> </h4>
+							</th:block>
+						<div class = "row">
+						
+						<div class="col-md-6">
+						<label>Description</label>
+                       <textarea id="n_desc" class="form-control custom-control" rows="3" style="resize:none" th:field="*{notificationDesc}"></textarea>     
+                        </div>
+                        
+                        <div class="col-md-4">
+						<label>Date</label>
+                       <input class="form-control" id="b_datetimepicker" readonly th:field="*{eventDate}"
+						placeholder="DD/MM/YYY" type="text" />
+                        </div>
+                        <div class="row">
+                        <div class="col-md-12"><hr/></div>
+                        </div>
+                        
+                        <div class ="row">
+                        <div class="col-md-4">
+                        <input type="submit" onclick="return validateForm();" class="btn btn-warning"  value="Add">
+                        </div>
+                        </div>
+						</div>
+                        
+						</form>
+				</section>
+				<section class="content container-fluid">
+                   <div>
+						<div class="table-responsive">
+							<table id="myTable" class="display table" width="100%">
+
+								<thead>
+									<tr>
+										<th>S.No</th>
+										<th>Notification Description</th>
+										<th>Date</th>
+										<!-- <th>View Details</th> -->
+									</tr>
+								</thead>
+								<tbody>
+									<th:block th:each="notificationDetail,itr:${notificationList}">
+										<tr>
+											<td th:text="${itr.index}+${1}"></td>
+											<td th:text="${notificationDetail.notificationDesc}"></td>
+											<td th:text="${notificationDetail.eventDate}"></td>
+											<!-- <td><a th:href="@{/notification/detail?id=}+${notificationDetail.id}">View Details</a></td> -->
+										</tr>
+									</th:block>
+								</tbody>
+
+							</table>
+						</div>
+					</div>
+				</section>
+			</div>
+
+		</section>
+		<!-- /.content -->
+	</div>
+	<footer class="main-footer"
+		th:include="fragments/secure_footer :: footer"> </footer>
+
+	<!-- Control Sidebar -->
+	<aside class="control-sidebar control-sidebar-dark"
+		th:include="fragments/secure_rightslider :: right">Create the
+		tabs</aside>
+	<div class="control-sidebar-bg"></div>
+	
+
+	<!-- Bootstrap 3.3.7 -->
+
+	<!-- AdminLTE App -->
+	<script th:src="@{../js/adminlte.min.js}"></script>
+
+	<!-- Optionally, you can add Slimscroll and FastClick plugins.
+     Both of these plugins are recommended to enhance the
+     user experience. -->
+
+	
+</body>
+
+<script th:src="@{../js/jquery.min.js}"></script>
+<script th:src="@{../js/bootstrap.min.js}"></script>
+
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">  
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker.css" rel="stylesheet">  
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>  
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script> </head>
+<script>
+	</script>
+<script th:src="@{../js/jquery.dataTables.min.js}"></script>
+<script type="text/javascript">
+		$(document).ready(function() {
+		$('#myTable').dataTable();
+	});
+		
+		$( "#b_datetimepicker" ).datepicker({
+			    autoclose: true,
+			    startDate: new Date()
+		});
+		
+		
+function validateForm(){
+	
+	
+	if($("#n_desc").val()=="" || $("#n_desc").val().trim().length<50){
+		
+		alert("Notification description should be at least more than 50 character");
+		$("#n_desc").focus();
+		return false;
+	}
+ if($("#b_datetimepicker").val()==""){
+	 
+	 alert("Please select date");
+	 $("#b_datetimepicker").focus();
+	 return false;
+ }
+ return true;
+}
+</script>
+
+</html>

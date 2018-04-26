@@ -1,0 +1,84 @@
+
+
+	<!-- sidebar: style can be found in sidebar.less -->
+	<section class="sidebar" th:fragment="left">
+
+		<!-- Sidebar user panel (optional) -->
+		<div class="user-panel">
+			<div th:if="${loggedInUser.base64Image != null}"
+				class="pull-left image">
+				<img th:src="*{'data:image/png;base64,'+loggedInUser.base64Image}"
+					class="img-circle" alt="User Image" />
+			</div>
+			<div th:unless="${loggedInUser.base64Image != null}"
+				class="pull-left image">
+				<img th:src="@{../images/user2-160x160.jpg}" class="img-circle"
+					alt="User Image">
+			</div>
+			<div class="pull-left info">
+				<p>
+					<span class="hidden-xs" th:text="${loggedInUser.firstName}">
+					</span> <span class="hidden-xs" th:text="${loggedInUser.lastName}"></span>
+				</p>
+				<!-- Status -->
+				<a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+			</div>
+		</div>
+
+		<!-- search form (Optional) -->
+		<form action="#" method="get" class="sidebar-form">
+			<div class="input-group">
+				<input type="text" name="q" class="form-control"
+					placeholder="Search..."> <span class="input-group-btn">
+					<button type="submit" name="search" id="search-btn"
+						class="btn btn-flat">
+						<i class="fa fa-search"></i>
+					</button>
+				</span>
+			</div>
+		</form>
+		<!-- /.search form -->
+
+		<!-- Sidebar Menu -->
+		<ul class="sidebar-menu" data-widget="tree">
+			<li class="header">HEADER</li>
+			<!-- Optionally, you can add icons to the links -->
+			<li><a th:href="@{/secure/dashboard}"><i class="fa fa-link"></i> <span>DeashBoard
+						</span></a></li>
+			<th:block th:if = "${loggedInUser.class.name=='com.oams.app.entities.Patient'}">
+			<li><a th:href="@{/bookappointment}"><i class="fa fa-link"></i> <span>Book OPD
+						Appointment</span></a></li>
+						
+			<!-- <li><a th:href="@{/appointment/history}"><i class="fa fa-link"></i> <span>Appointment
+						History</span></a></li>	 -->
+						
+						<li><a th:href="@{/book/diagnostictest}"><i class="fa fa-link"></i> <span>
+						Book Diagnostic Appointment</span></a></li>	
+						</th:block>
+						
+			<li th:if = "${loggedInUser.class.name=='com.oams.app.entities.Staff'}"><a th:href="@{/hospital/register}"><i class="fa fa-link"></i> <span>Hospital Registration
+				</span></a></li>
+		<li th:if = "${loggedInUser.class.name=='com.oams.app.entities.Staff'}"><a th:href="@{/hospital/list}"><i class="fa fa-link"></i> <span>Hospital List
+				</span></a></li>
+		<li th:if = "${loggedInUser.class.name=='com.oams.app.entities.Staff'}"><a th:href="@{/department/capacity}"><i class="fa fa-link"></i> <span>Manage Department Capacity
+		</span></a></li>
+		<li th:if = "${loggedInUser.class.name=='com.oams.app.entities.Staff'}"><a th:href="@{/notification/add}"><i class="fa fa-link"></i> <span>Manage Notifications
+		</span></a></li>	
+        <li th:if = "${loggedInUser.class.name=='com.oams.app.entities.Staff'}"><a th:href="@{/hospital/addDoctor}"><i class="fa fa-link"></i> <span>Manage Doctors
+		</span></a></li>	
+        			
+			
+			<th:block th:if = "${loggedInUser.class.name=='com.oams.app.entities.Patient'}">
+			 <li  class="treeview"><a href="#"><i class="fa fa-link"></i>
+					<span>Appointment History</span> <span class="pull-right-container">
+						<i class="fa fa-angle-left pull-right"></i>
+				</span> </a>
+				<ul class="treeview-menu">
+					<li><a th:href="@{/appointment/history}">OPD Booking History</a></li>
+					<li><a th:href="@{/diagnostictest/history}">Tests Booking History</a></li>
+				</ul></li>
+				</th:block>
+		</ul>
+		<!-- /.sidebar-menu -->
+	</section>
+	<!-- /.sidebar -->

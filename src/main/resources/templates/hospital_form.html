@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<!--
+This is a starter template page. Use this page to start your new project from
+scratch. This page gets rid of all links and provides the needed markup only.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>AdminLTE 2 | Starter</title>
+<!-- Tell the browser to be responsive to screen width -->
+<meta
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+	name="viewport">
+<link rel="stylesheet" th:href="@{../css/bootstrap.min.css}">
+<!-- Font Awesome -->
+<link rel="stylesheet" th:href="@{../css/font-awesome.min.css}">
+<!-- Ionicons -->
+<link rel="stylesheet" th:href="@{../css/ionicons.min.css}">
+<!-- Theme style -->
+<link rel="stylesheet" th:href="@{../css/AdminLTE.min.css}">
+<!-- AdminLTE Skins. We have chosen the skin-blue for this starter
+        page. However, you can choose any other skin. Make sure you
+        apply the skin class to the body tag so the changes take effect. -->
+<link rel="stylesheet" th:href="@{../css/skin-blue.min.css}">
+
+<style>
+
+span.multiselect-native-select {
+	position: relative
+}
+span.multiselect-native-select select {
+	border: 0!important;
+	clip: rect(0 0 0 0)!important;
+	height: 1px!important;
+	margin: -1px -1px -1px -3px!important;
+	overflow: hidden!important;
+	padding: 0!important;
+	position: absolute!important;
+	width: 1px!important;
+	left: 50%;
+	top: 30px
+}
+.multiselect-container {
+	position: absolute;
+	list-style-type: none;
+	margin: 0;
+	padding: 0
+}
+.multiselect-container .input-group {
+	margin: 5px
+}
+.multiselect-container>li {
+	padding: 0
+}
+.multiselect-container>li>a.multiselect-all label {
+	font-weight: 700
+}
+.multiselect-container>li.multiselect-group label {
+	margin: 0;
+	padding: 3px 20px 3px 20px;
+	height: 100%;
+	font-weight: 700
+}
+.multiselect-container>li.multiselect-group-clickable label {
+	cursor: pointer
+}
+.multiselect-container>li>a {
+	padding: 0
+}
+.multiselect-container>li>a>label {
+	margin: 0;
+	height: 100%;
+	cursor: pointer;
+	font-weight: 400;
+	padding: 3px 0 3px 30px
+}
+.multiselect-container>li>a>label.radio, .multiselect-container>li>a>label.checkbox {
+	margin: 0
+}
+.multiselect-container>li>a>label>input[type=checkbox] {
+	margin-bottom: 5px
+}
+.btn-group>.btn-group:nth-child(2)>.multiselect.btn {
+	border-top-left-radius: 4px;
+	border-bottom-left-radius: 4px
+}
+.form-inline .multiselect-container label.checkbox, .form-inline .multiselect-container label.radio {
+	padding: 3px 20px 3px 40px
+}
+.form-inline .multiselect-container li a label.checkbox input[type=checkbox], .form-inline .multiselect-container li a label.radio input[type=radio] {
+	margin-left: -20px;
+	margin-right: 0
+}
+
+hr {
+	display: block;
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+	margin-left: auto;
+	margin-right: auto;
+	border-style: inset;
+	border-width: 1px;
+}
+
+.content {
+	min-height: 250px;
+	padding: 15px;
+	margin-right: 5%;
+	margin-left: -8%;
+	padding-left: 15px;
+	padding-right: 15px;
+}
+</style>
+
+<!-- Google Font -->
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+</head>
+<!--
+BODY TAG OPTIONS:
+=================
+Apply one or more of the following classes to get the
+desired effect
+|---------------------------------------------------------|
+| SKINS         | skin-blue                               |
+|               | skin-black                              |
+|               | skin-purple                             |
+|               | skin-yellow                             |
+|               | skin-red                                |
+|               | skin-green                              |
+|---------------------------------------------------------|
+|LAYOUT OPTIONS | fixed                                   |
+|               | layout-boxed                            |
+|               | layout-top-nav                          |
+|               | sidebar-collapse                        |
+|               | sidebar-mini                            |
+|---------------------------------------------------------|
+-->
+<body class="hold-transition skin-blue sidebar-mini">
+	<div class="wrapper">
+
+
+
+		<header class="main-header">
+			<div th:include="fragments/secure_header :: header"></div>
+			<!-- Logo -->
+
+		</header>
+		<aside class="main-sidebar"
+			th:include="fragments/secure_leftslider :: left"></aside>
+
+		<!-- Content Wrapper. Contains page content -->
+		<div class="content-wrapper">
+			<!-- Content Header (Page header) -->
+			<section class="content-header">
+				<h1>
+					<div class="alert alert-success" role="alert" id="success_message">Hospital Registration Form</div>
+					<!-- Page Header <small>Optional description</small> -->
+				</h1>
+				
+			</section>
+
+			<!-- Main content -->
+			<section class="content container-fluid">
+				<!--------------------------
+        | Your Page Content Here |
+        -------------------------->
+
+				<div class="content-wrapper">
+					<!-- Content Header (Page header) -->
+					<section class="content-header">
+						<h1></h1>
+						<!-- <ol class="breadcrumb">
+					<li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
+					<li class="active">Here</li>
+				</ol> -->
+					</section>
+
+					<!-- Main content -->
+					
+					
+					<section class="content container-fluid">
+
+
+                 <div th:if="${msg != null}" style="color:#00a65a;">
+				<h4 th:text="${msg}"></h4> 
+				</div>
+				<th:block th:if="${error !=null}">
+							<h4 style="color:red" th:text="${error}"> </h4>
+							</th:block>
+				<div class="container">
+
+
+					<form class="well form-horizontal" style="margin-right:20%" autocomplete="off" action="#"
+						th:action="@{/hospital/register}"
+						th:object="${hospital}" th:role="form" method="post"
+						enctype="multipart/form-data">
+						<fieldset>
+
+							<!-- Form Name -->
+							<!-- <legend>Contact Us Today!</legend> -->
+
+							<!-- Text input-->
+
+							<div class="form-group">
+								<label class="col-md-4 control-label">Hospital Name</label>
+								<div class="col-md-6 inputGroupContainer">
+									<div class="input-group">
+										<span class="input-group-addon"><i
+											class="glyphicon glyphicon-user"></i></span> <input
+											th:field="*{hospitanName}" placeholder="Hospital Name"
+											class="form-control" type="text" id="hName">
+									</div>
+								</div>
+							</div>
+
+							<!-- Text input-->
+
+							<div class="form-group">
+								<label class="col-md-4 control-label">Hospital Address</label>
+								<div class="col-md-6 inputGroupContainer">
+									<div class="input-group">
+										<span class="input-group-addon"><i
+											class="glyphicon glyphicon-user"></i></span> <input
+											th:field="*{hAddress}" placeholder="Hospital Address"
+											class="form-control" type="text" id="hAddress">
+									</div>
+								</div>
+							</div>
+
+                                
+                                <hr/>
+                               <h4 style="color:orange"><b>Select Departments</b></h4>
+                               
+                               <th:block th:each="department,itr:${departments}">
+                                <div class="form-check col-md-4">
+                                
+                              <!--   <input type="checkbox" th:field="*{departmentList[__${itr.index}__]}" th:value="${department.id}"  /> -->
+										 <input type="checkbox" class="form-check-input departmentType"
+											th:id="${department.id}"> <label class="form-check-label"
+											for="exampleCheck1" th:text="${department.deptName}" th:value="${department.id}"> </label>
+											<input th:type="hidden" class ="departmentTypeHidden"  th:id="'department'+${itr.index}"> <!-- th:field="*{departmentList[__${itr.index}__]}" -->
+									</div>
+									
+									</th:block>
+									
+                              
+			                  
+			                 <div class="row">
+			                <div class="col-md-12">
+			                   <hr/>
+			                </div>
+			                 </div>
+                            <div class="margin10"></div>
+
+								<div class="form-group">
+								<label class="col-md-4 control-label">Hospital Contact</label>
+								<div class="col-md-6 inputGroupContainer">
+									<div class="input-group">
+										<span class="input-group-addon"><i
+											class="glyphicon glyphicon-user"></i></span> <input
+											th:field="*{hContact}" placeholder="Hospital Contact"
+											class="form-control" type="number" id  ="hContact">
+									</div>
+								</div>
+							</div>
+
+							
+							 <div class="form-group">
+								<label class="col-md-4 control-label">Country</label>
+								<div class="col-md-6 selectContainer">
+									<div class="input-group">
+										<span class="input-group-addon"><i
+											class="glyphicon glyphicon-list"></i></span> <select id="b_country"
+											th:field="*{city.state.country.id}" class="form-control selectpicker">
+											<option th:value="0">Select Country</option>
+											<option th:each="country:${countries}" th:value="${country.id}" th:text="${country.countryName}"></option>
+										</select>
+									</div>
+								</div>
+							</div>
+
+							 <div class="form-group">
+								<label class="col-md-4 control-label">State</label>
+								<div class="col-md-6 selectContainer">
+									<div class="input-group">
+										<span class="input-group-addon"><i
+											class="glyphicon glyphicon-list"></i></span> <select id="b_state"
+											th:field="*{city.state.id}" class="form-control selectpicker">
+											<option th:value="0">Select State</option>
+
+										</select>
+										
+									</div>
+								</div>
+							</div> 
+
+							 <div class="form-group">
+								<label class="col-md-4 control-label">City</label>
+								<div class="col-md-6 selectContainer">
+									<div class="input-group">
+										<span class="input-group-addon"><i
+											class="glyphicon glyphicon-list"></i></span> <select id="b_city"
+											th:field="*{city.id}" class="form-control selectpicker">
+											<option th:value="0">Select City</option>
+
+										</select>
+									</div>
+								</div>
+							</div>
+
+							<!-- <div class="form-group">
+								<label class="col-md-4 control-label">Hospital</label>
+								<div class="col-md-6 selectContainer">
+									<div class="input-group">
+										<span class="input-group-addon"><i
+											class="glyphicon glyphicon-list"></i></span> <select id="b_hospital"
+											th:field="*{hosId}" class="form-control selectpicker">
+											<option th:value="0">Please Select Hospital</option>
+
+										</select>
+									</div>
+								</div>
+							</div> -->
+
+							<!-- <div class="form-group">
+								<label class="col-md-4 control-label">Department</label>
+								<div class="col-md-6 selectContainer">
+									<div class="input-group">
+										<span class="input-group-addon"><i
+											class="glyphicon glyphicon-list"></i></span> <select
+											id="b_department" th:field="*{deptId}"
+											class="form-control selectpicker">
+											<option th:value="0">Please Select Department</option>
+
+										</select>
+									</div>
+								</div>
+							</div> -->
+
+
+							<!-- <div class="form-group">
+								<label class="col-md-4 control-label">Date</label>
+								<div class="col-md-6">
+									<div class="input-group">
+										<span class="input-group-addon"><i
+											class="glyphicon glyphicon-list"></i></span> <input
+											class="form-control" id="b_datetimepicker" readonly th:field="*{appointmentDate}"
+											placeholder="DD/MM/YYY" type="text" />
+									</div>
+								</div>
+							</div> -->
+
+														<!-- Success message -->
+							<!-- <div class="alert alert-success" role="alert"
+								id="success_message">
+								Success <i class="glyphicon glyphicon-thumbs-up"></i> Thanks for
+								contacting us, we will get back to you shortly.
+							</div> -->
+
+							<!-- Button -->
+							<div class="form-group">
+								<label class="col-md-4 control-label"></label>
+								<div class="col-md-4">
+									<input type="submit" onclick="return validateForm();" class="btn btn-warning"  value="Save">
+										<!-- Book <span class="glyphicon glyphicon-send"></span> -->
+									
+								</div>
+							</div>
+
+						</fieldset>
+						 <div id="loader"
+							style="width: 400px; height: 70px; border: 4px solid #999; border-radius: 8px 8px 8px 8px; z-index: 9999; position: absolute; left: 40%; right: 0px; bottom: 0px; top: 40%; display: none; background: #fff; padding: 13px;">
+							Please wait <img th:src="@{../images/ajax-loader.gif}"
+								style="padding-left: 10px;" />
+
+						</div>
+					</form>
+						<div id="loader"
+							style="width: 400px; height: 70px; border: 4px solid #999; border-radius: 8px 8px 8px 8px; z-index: 9999; position: absolute; left: 40%; right: 0px; bottom: 0px; top: 70%; display: none; background: #fff; padding: 13px;">
+							Please wait <img th:src="@{../images/ajax-loader.gif}"
+								style="padding-left: 10px;" />
+
+						</div>
+
+					</div></section>
+					
+				</div>
+				<
+			</section>
+			<!-- /.content -->
+		</div>
+		<!-- /.content-wrapper -->
+
+		<!-- Main Footer -->
+
+		<footer class="main-footer"
+			th:include="fragments/secure_footer :: footer"> </footer>
+
+		<!-- Control Sidebar -->
+		<aside class="control-sidebar control-sidebar-dark"
+			th:include="fragments/secure_rightslider :: right">Create the
+			tabs</aside>
+		<!-- /.control-sidebar -->
+		<!-- Add the sidebar's background. This div must be placed
+  immediately after the control sidebar -->
+		<div class="control-sidebar-bg"></div>
+	</div>
+	<!-- ./wrapper -->
+
+	<!-- REQUIRED JS SCRIPTS -->
+
+	<!-- AdminLTE App -->
+	<script th:src="@{../js/adminlte.min.js}"></script>
+
+	<!-- Optionally, you can add Slimscroll and FastClick plugins.
+     Both of these plugins are recommended to enhance the
+     user experience. -->
+
+	
+</body>
+
+<script th:src="@{../js/jquery.min.js}"></script>
+<script th:src="@{../js/bootstrap.min.js}"></script> 
+
+<script>
+/* 
+ $(function() {
+    $('.multiselect-ui').multiselect({
+        includeSelectAllOption: true
+    });
+}); */
+
+$("#b_country").on("change",function(){
+	
+	var countryId = $("#b_country").val();
+	var stateStr="<option value='0'>Select State</option>";
+	
+	$("#b_state").html(stateStr);
+	$("#b_city").html(stateStr);
+	/* $("#b_hospital").html(stateStr);
+	$("#b_department").html(stateStr);
+	$("#b_datetimepicker").val(""); */
+	
+	if(Number(countryId) >0 ){
+		$("#black_overlay").fadeIn("slow");
+		$("#loader").fadeIn("slow");
+	
+   	var BASE_CONTEXT_PATH = "/";
+   	var urlStr =BASE_CONTEXT_PATH +"stateByCountryID";
+  
+   	$.ajax({
+           type: "GET",
+           contentType: "application/json",
+           dataType: "json",
+           url: urlStr+"?countryId="+countryId,
+       })
+       .done(function (response) {
+           $.each(response, function (index, value) {
+
+        	   stateStr += "<option value='"+value.id+"'>"+value.name+"</option>"
+           })
+           $("#b_state").html(stateStr);
+           $("#loader").fadeOut("slow");
+	      $("#black_overlay").fadeOut("slow");
+       })
+	}
+})
+
+
+
+	$("#b_state").on("change",function(){
+		
+		var stateId = $("#b_state").val();
+		var stateStr="<option value='0'>Select City</option>";
+		
+		$("#b_city").html(stateStr);
+		/* $("#b_hospital").html(stateStr);
+		$("#b_department").html(stateStr);
+		$("#b_datetimepicker").val(""); */
+		
+		if(Number(stateId) >0 ){
+			$("#black_overlay").fadeIn("slow");
+			$("#loader").fadeIn("slow");
+	   	var BASE_CONTEXT_PATH = "/";
+	   	var urlStr =BASE_CONTEXT_PATH +"cityByStateId";
+	  
+	   	$.ajax({
+	           type: "GET",
+	           contentType: "application/json",
+	           dataType: "json",
+	           url: urlStr+"?stateId="+stateId,
+	       })
+	       .done(function (response) {
+	           $.each(response, function (index, value) {
+
+	             
+	        	   stateStr += "<option value='"+value.id+"'>"+value.name+"</option>"
+	           })
+	           $("#b_city").html(stateStr);
+	           $("#loader").fadeOut("slow");
+			   $("#black_overlay").fadeOut("slow");
+
+	       })
+		}
+	})
+
+	/* $("#b_city").on("change",function(){
+		
+		var cityId = $("#b_city").val();
+		var stateStr="<option value='0'>Select Hospital</option>";
+		$("#b_hospital").html(stateStr);
+		$("#b_department").html(stateStr);
+		$("#b_datetimepicker").val("");
+		
+		if(Number(cityId) >0 ){
+			$("#black_overlay").fadeIn("slow");
+			$("#loader").fadeIn("slow");
+	   	var BASE_CONTEXT_PATH = "/";
+	   	var urlStr =BASE_CONTEXT_PATH +"cityWiseHospList";
+	  
+	   	$.ajax({
+	           type: "GET",
+	           contentType: "application/json",
+	           dataType: "json",
+	           url: urlStr+"?cityId="+cityId,
+	       })
+	       .done(function (response) {
+	           $.each(response, function (index, value) {
+
+	             
+	        	   stateStr += "<option value='"+value.id+"'>"+value.hospitanName+"</option>"
+	           })
+	           $("#b_hospital").html(stateStr);
+	           $("#loader").fadeOut("slow");
+			   $("#black_overlay").fadeOut("slow");
+
+	       })
+		}
+	}) */
+
+	function validateForm(){
+	
+	/* setCollectionName(); */
+	fillHiddenValue();
+	
+	if (document.getElementById('hName').value == '' || $("#hName").val().trim().length<=0)
+    {
+        alert("Please enter hospital name");
+        document.getElementById('hName').focus();
+        return  false;
+    }
+	
+	if (document.getElementById('hAddress').value == '' || $("#hAddress").val().trim().length<=0)
+    {
+        alert("Please enter hospital address");
+        document.getElementById('hAddress').focus();
+        return  false;
+    }
+	
+	if($('input.departmentType:checkbox:checked').length<=0){
+		
+		alert("Please select at least one department");
+		return false;
+	}
+	
+	if (document.getElementById('hContact').value == '' || $("#hContact").val().trim().length<=0)
+    {
+        alert("Please enter hospital address");
+        document.getElementById('hContact').focus();
+        return  false;
+    }
+	 if (document.getElementById('b_country').value == '0' || document.getElementById('b_country').value == 0)
+	    {
+	        alert("Please Select Country");
+	        document.getElementById('b_country').focus();
+	        return  false;
+	    }
+	    
+	    if (document.getElementById('b_state').value == '0' || document.getElementById('b_state').value == 0)
+	    {
+	        alert("Please Select State");
+	        document.getElementById('b_state').focus();
+	        return  false;
+	    }
+	    
+	    if (document.getElementById('b_city').value == '0' || document.getElementById('b_city').value == 0)
+	    {
+	        alert("Please Select City");
+	        document.getElementById('b_city').focus();
+	        return  false;
+	    }
+	
+}
+
+function fillHiddenValue(){
+	
+	var count = 0;
+	$(".departmentType").each(function(){
+		
+		if($(this).is(":checked")){
+		     
+			$("#department"+count).attr("name","departmentList["+count+"].id");
+			$("#department"+count).val($(this).attr("id"));
+			count++;
+			
+			
+		}
+		
+	});
+}
+
+	function setCollectionName(){
+	
+	var count = 0;
+	$(".departmentType").each(function(){
+		
+		$(this).attr("name","departmentList["+count+"]");
+		count++;
+		
+	});
+}
+</script>
+
+<div id="black_overlay"
+	style="width: 100%; height: 100%; background: #000; opacity: 0.6; z-index: 999; position: absolute; left: 0px; right: 0px; bottom: 0px; top: 0; display: none;">
+</div>
+</html>

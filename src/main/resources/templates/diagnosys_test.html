@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org" class="global xlarge">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title></title>
+<!-- Tell the browser to be responsive to screen width -->
+<meta
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+	name="viewport">
+<link rel="stylesheet" th:href="@{../css/bootstrap.min.css}">
+<link rel="stylesheet" th:href="@{../css/bootstrap-theme.min.css}">
+<link rel="stylesheet" th:href="@{../css/font-awesome.min.css}">
+<!-- Ionicons -->
+<link rel="stylesheet" th:href="@{../css/ionicons.min.css}">
+<!-- Theme style -->
+<link rel="stylesheet" th:href="@{../css/AdminLTE.min.css}">
+<link rel="stylesheet" th:href="@{../css/skin-blue.min.css}">
+
+<style>
+.event a {
+    background-color: #42B373 !important;
+    background-image :none !important;
+    color: #ffffff !important;
+}
+
+@media ( min-width : 600px) {
+	.container {
+		max-width: 770px;
+		
+	}
+}
+
+.success-div {
+	background-color: #00a65a;
+}
+
+.highlighted-cal-dates{
+background-color: #00a65a;
+/* color:#00a65a */
+}
+</style>
+
+<!-- Google Font -->
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+</head>
+<!--
+BODY TAG OPTIONS:
+=================
+Apply one or more of the following classes to get the
+desired effect
+|---------------------------------------------------------|
+| SKINS         | skin-blue                               |
+|               | skin-black                              |
+|               | skin-purple                             |
+|               | skin-yellow                             |
+|               | skin-red                                |
+|               | skin-green                              |
+|---------------------------------------------------------|
+|LAYOUT OPTIONS | fixed                                   |
+|               | layout-boxed                            |
+|               | layout-top-nav                          |
+|               | sidebar-collapse                        |
+|               | sidebar-mini                            |
+|---------------------------------------------------------|
+-->
+<body class="hold-transition skin-blue sidebar-mini">
+	<div class="wrapper">
+
+
+
+		<header class="main-header">
+			<div th:include="fragments/secure_header :: header"></div>
+			<!-- Logo -->
+
+		</header>
+		<aside class="main-sidebar"
+			th:include="fragments/secure_leftslider :: left"></aside>
+<section>
+		<!-- Content Wrapper. Contains page content -->
+		<div class="content-wrapper">
+			<!-- Content Header (Page header) -->
+			<section class="content-header">
+				<h1>
+					<!-- Please Select :- Hospital and Department -->
+					<!-- <small>Hospital and  Department</small> -->
+					<div class="alert success-div" role="alert" id="success_message">Diagnostic Appointment Form</div>
+				</h1>
+				<!-- <ol class="breadcrumb">
+					<li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
+					<li class="active">Here</li>
+				</ol> -->
+			</section>
+
+			<!-- Main content -->
+			<section class="content container-fluid">
+
+				<div class="container">
+
+
+					<form class="well form-horizontal" autocomplete="off" action="#"
+						th:action="@{/book/diagnostictest}"
+						th:object="${test}" th:role="form" method="post"
+						enctype="multipart/form-data">
+						<fieldset>
+
+							<!-- Form Name -->
+							<!-- <legend>Contact Us Today!</legend> -->
+
+							<!-- Text input-->
+						<input th:type="hidden"  th:field="*{patient.id}">
+						<h4 style="color:orange"><b>Patient Detail</b></h4>
+						<hr style="width: 100%; color: black; height: 1px; background-color:black;" />
+						  <div class="form-group">
+								<div class="col-md-6 inputGroupContainer">
+								<label class="control-label">First Name</label>
+									<div class="input-group">
+										<span class="input-group-addon"><i
+											class="glyphicon glyphicon-user"></i></span> <input
+											th:field="*{patient.firstName}" placeholder="First Name" readonly
+											class="form-control" type="text">
+									</div>
+								</div>
+							
+
+							<!-- Text input-->
+
+							
+								<div class="col-md-6 inputGroupContainer">
+								<label class="control-label">Last Name</label>
+									<div class="input-group">
+										<span class="input-group-addon"><i
+											class="glyphicon glyphicon-user"></i></span> <input
+											th:field="*{patient.lastName}" placeholder="Last Name" readonly
+											class="form-control" type="text">
+									</div>
+								</div>
+							   </div>
+                          
+							<!-- Text input-->
+							<div class="form-group">
+								<div class="col-md-6 inputGroupContainer">
+								<label class="control-label">E-Mail</label>
+									<div class="input-group">
+										<span class="input-group-addon"><i
+											class="glyphicon glyphicon-envelope"></i></span> <input
+											placeholder="E-Mail Address" readonly th:field="*{patient.email}"
+											class="form-control" type="text">
+									</div>
+								</div>
+							
+							<!-- Text input-->
+
+							
+								<div class="col-md-6 inputGroupContainer">
+								<label class="control-label">Phone #</label>
+									<div class="input-group">
+										<span class="input-group-addon"><i
+											class="glyphicon glyphicon-earphone"></i></span> <input
+											placeholder="Mobile No" readonly th:field="*{patient.mobNo}"
+											class="form-control" type="text">
+									</div>
+								</div>
+							</div>
+							
+							<hr style="width: 100%; color: black; height: 1px; background-color:black;" />
+                               <h4 style="color:orange"><b>Select Tests</b></h4>
+                               
+                              <div class="form-group">
+                               <th:block th:each="testDetail,itr:${tests}">
+                                <div class="form-check col-md-4">
+                                
+                              <!--   <input type="checkbox" th:field="*{departmentList[__${itr.index}__]}" th:value="${department.id}"  /> -->
+										 <input type="checkbox" class="form-check-input departmentType"
+											th:id="${testDetail.testName}"> <label class="form-check-label"
+											for="exampleCheck1" th:text="${testDetail.testName}+'('+${testDetail.testEstimatedCharges}+')'" th:value="${testDetail.testName}"> </label>
+											<input th:type="hidden" class ="departmentTypeHidden"  th:id="'testDetail'+${itr.index}"> <!-- th:field="*{departmentList[__${itr.index}__]}" -->
+									</div>
+									</th:block>
+								</div>
+                              <h4 style="color:orange"><b>Note:-</b></h4>For each test charges is  given inside "()" in INR  before placing request please have a look.
+                             
+                             
+                              <hr style="width: 100%; color: black; height: 1px; background-color:black;" />
+                               <h4 style="color:orange"><b>Past Medical History</b></h4>
+                               <div class="form-group">
+								
+								<div class="col-md-4 inputGroupContainer">
+								<label class=" control-label">Blood Group</label>
+									<div class="input-group">
+										<span class="input-group-addon"><i
+											class="glyphicon glyphicon-list"></i></span> 
+											<select id="b_bgroup"
+											th:field="*{bloodGroup}" class="form-control selectpicker">
+											<option th:value="0">Select Blood Group</option>
+											<option value="O-Positive">O +ve</option>
+											<option value="O-Negative">O -Ve</option>
+											<option value="A-Positive">A +Ve</option>
+											<option value="A-negative">A -Ve</option>
+											<option value="B-Positive">B +Ve</option>
+											<option value="B-Negative">B -Ve</option>
+											<option value="AB-Positive">AB +Ve</option>
+											<option value="AB-Negative">AB -Ve</option>
+										</select>
+											
+									</div>
+								</div>
+								
+								<div class="col-md-4 inputGroupContainer">
+								<label class=" control-label">Height In CM</label>
+									<div class="input-group">
+										<span class="input-group-addon">
+										</span> 
+											<input
+											placeholder="Height In Cm"  th:field="*{height}"
+											class="form-control" type="number">
+											
+									</div>
+								</div>
+								
+								<div class="col-md-4 inputGroupContainer">
+								<label class=" control-label">Weight In Kg</label>
+									<div class="input-group">
+										<span class="input-group-addon">
+										</span> 
+											<input
+											placeholder="Weight In Kg"  th:field="*{weight}"
+											class="form-control" type="number">
+									</div>
+								</div>
+								
+								<div class="col-md-4 inputGroupContainer">
+								<label class=" control-label">Blood Pressure</label>
+									<div class="input-group">
+										<span class="input-group-addon">
+										</span> 
+											<input
+											placeholder="Blood Presure"  th:field="*{bloodPresure}"
+											class="form-control" type="text">
+									</div>
+								</div>
+								
+								<div class="col-md-4 inputGroupContainer">
+								<label class=" control-label">Allergies</label>
+									<div class="input-group">
+										<span class="input-group-addon">
+										</span> 
+											<input
+											placeholder="Allergies"  th:field="*{allergies}"
+											class="form-control" type="text">
+									</div>
+								</div>
+								
+								<div class="col-md-4 inputGroupContainer">
+								<label class=" control-label">Past Diseases</label>
+									<div class="input-group">
+										<span class="input-group-addon">
+										</span> 
+											<input
+											placeholder="Allergies"  th:field="*{allergies}"
+											class="form-control" type="text">
+									</div>
+								</div>
+						 <div class="form-group">		
+						<div class="col-md-12">
+						<label>Current Medications</label>
+                       <textarea id="currentMedications" class="form-control custom-control" rows="3" style="resize:none" th:field="*{currentMedications}"></textarea>     
+                        </div>
+						</div>	
+							</div>
+						 
+			                <hr style="width: 100%; color: black; height: 1px; background-color:black;" />
+			                
+
+							 <h4 style="color:orange"><b>Hospital Detail</b></h4>
+							<div class="form-group">
+								
+								<div class="col-md-4 selectContainer">
+								<label class= "control-label">Country</label>
+									<div class="input-group">
+										<span class="input-group-addon"><i
+											class="glyphicon glyphicon-list"></i></span> <select id="b_country"
+											th:field="*{country.id}" class="form-control selectpicker">
+											<option th:value="0">Select Country</option>
+											<option th:each="country:${countries}" th:value="${country.id}" th:text="${country.countryName}"></option>
+										</select>
+									</div>
+								</div>
+								
+								<div class="col-md-4 selectContainer">
+								<label class="control-label">State</label>
+									<div class="input-group">
+										<span class="input-group-addon"><i
+											class="glyphicon glyphicon-list"></i></span> <select id="b_state"
+											th:field="*{state.id}" class="form-control selectpicker">
+											<option th:value="0">Select State</option>
+										</select>
+										
+									</div>
+								</div>
+								
+								<div class="col-md-4 selectContainer">
+								<label class="control-label">City</label>
+									<div class="input-group">
+										<span class="input-group-addon"><i
+											class="glyphicon glyphicon-list"></i></span> <select id="b_city"
+											th:field="*{city.id}" class="form-control selectpicker">
+											<option th:value="0">Select City</option>
+
+										</select>
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<div class="col-md-4 selectContainer">
+								<label class="control-label">Hospital</label>
+									<div class="input-group">
+										<span class="input-group-addon"><i
+											class="glyphicon glyphicon-list"></i></span> <select id="b_hospital"
+											th:field="*{hospital.id}" class="form-control selectpicker">
+											<option th:value="0">Please Select Hospital</option>
+
+										</select>
+									</div>
+								</div>
+						
+							<!-- <div class="col-md-4 selectContainer">
+								<label class=" control-label">Department</label>
+									<div class="input-group">
+										<span class="input-group-addon"><i
+											class="glyphicon glyphicon-list"></i></span> <select
+											id="b_department" th:field="*{deptId}"
+											class="form-control selectpicker">
+											<option th:value="0">Please Select Department</option>
+
+										</select>
+									</div>
+								</div> -->
+							
+								<div class="col-md-4">
+								<label class="control-label">Date</label>
+									<div class="input-group">
+										<span class="input-group-addon"><i
+											class="glyphicon glyphicon-list"></i></span> <input
+											class="form-control" id="b_datetimepicker" readonly th:field="*{appointmentDate}"
+											placeholder="DD/MM/YYY" type="text" />
+									</div>
+								</div>
+								</div>
+
+								<div class="row">
+			                <div class="col-md-12">
+			                <hr style="width: 100%; color: black; height: 1px; background-color:black;" />
+			                </div>
+			                </div>
+							<!-- Success message -->
+							<!-- <div class="alert alert-success" role="alert"
+								id="success_message">
+								Success <i class="glyphicon glyphicon-thumbs-up"></i> Thanks for
+								contacting us, we will get back to you shortly.
+							</div> -->
+
+							<!-- Button -->
+							<div class="form-group">
+								<label class="col-md-4 control-label"></label>
+								<div class="col-md-4">
+									<input type="submit" class="btn btn-warning" onclick="return validateForm()" value="Book">
+										<!-- Book <span class="glyphicon glyphicon-send"></span> -->
+									
+								</div>
+							</div>
+
+						</fieldset>
+					</form>
+						<div id="loader"
+							style="width: 400px; height: 70px; border: 4px solid #999; border-radius: 8px 8px 8px 8px; z-index: 9999; position: absolute; left: 40%; right: 0px; bottom: 0px; top: 80%; display: none; background: #fff; padding: 13px;">
+							Please wait <img th:src="@{../images/ajax-loader.gif}"
+								style="padding-left: 10px;" />
+
+						</div>
+
+					</div></section>
+		</div>
+
+		</section>
+		<!-- /.content -->
+	</div>
+	<footer class="main-footer"
+		th:include="fragments/secure_footer :: footer"> </footer>
+
+	<!-- Control Sidebar -->
+	<aside class="control-sidebar control-sidebar-dark"
+		th:include="fragments/secure_rightslider :: right">Create the
+		tabs</aside>
+	<div class="control-sidebar-bg"></div>
+
+	<!-- Bootstrap 3.3.7 -->
+
+	<!-- AdminLTE App -->
+	<script th:src="@{../js/adminlte.min.js}"></script>
+
+	<!-- Optionally, you can add Slimscroll and FastClick plugins.
+     Both of these plugins are recommended to enhance the
+     user experience. -->
+
+	
+</body>
+
+<script>
+	/* $(document).ready(function() {
+	 $("#upload-file-input").on("change", uploadFile);
+	 });	
+
+	 function uploadFile() {
+	 $.ajax({
+	 url: "/uploadimage",
+	 type: "POST",
+	 data: new FormData($("#upload-file-form")[0]),
+	 enctype: 'multipart/form-data',
+	 processData: false,
+	 contentType: false,
+	 cache: false,
+	 success: function () {
+	 // Handle upload success
+	 // ...
+	 },
+	 error: function () {
+	 // Handle upload error
+	 // ...
+	 }
+	 });
+	 } */
+	/* $("#profileImg").on("click",function(){
+	
+	
+	
+	 }) */
+</script>
+<script th:src="@{../js/jquery.min.js}"></script>
+<script th:src="@{../js/bootstrap.min.js}"></script>
+
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">  
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker.css" rel="stylesheet">  
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>  
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script> </head>
+
+<script type="text/javascript">
+    
+var availabilityDateArr=[];
+$(document).ready(function() {
+	
+	
+ 	/* $(".datepicker").datetimepicker({
+	    format: 'YYYY/MM/DD hh:ii',
+	    startDate: '2016/08/19 10:00',
+	    daysOfWeekDisabled: [1,2,3,4,5],
+	    datesDisabled: ['2016/08/20'],
+	    autoclose: true,    
+	}); 
+	
+	
+	 $('.form_date').datetimepicker({
+            format: 'yyyy-mm-dd',
+            todayBtn: 1,
+            autoclose: 1,
+            startView: 2,
+            minView: 2,
+            forceParse: 0,
+            daysOfWeekDisabled: [0, 6],
+            datesDisabled: ['2016-09-16'], */
+	
+	
+	
+	/*  $( "#b_datetimepicker" ).datepicker(); */
+	/* var eventDates=['04/18/2018','04/20/2018']; */
+	
+	
+	 
+      /*   var today_formatted     = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+('0'+today.getDate()).slice(-2);
+        var user_busy_days      = ['2018-12-09','2018-12-16','2018-12-19']; */
+ 
+ function highlightDatePicker(dateArray){
+	 
+	 
+	 var today  = new Date();
+   
+	 $('#b_datetimepicker').datepicker({
+         inline: true,
+         sideBySide: true,
+         autoclose: true,
+         beforeShowDay: function (date) {
+        	 
+         var month = date.getMonth()+1;
+         if(Number(month<10)){
+        	 
+        	 month = "0"+month;
+         }
+         calender_date = date.getFullYear()+'-'+month+'-'+('0'+date.getDate()).slice(-2);
+         
+         	var search_index = $.inArray(calender_date, dateArray);
+					if (search_index > -1) {
+                 return {classes: 'highlighted-cal-dates', tooltip: 'Available.'};
+             }else{
+                 return {classes: 'non-highlighted-cal-dates', tooltip: 'Not Available'};
+             } 
+
+         }
+     });
+	 
+ }
+ 
+	
+	/* $( "#b_datetimepicker" ).datepicker({
+		
+		 beforeShowDay: function( date ) {
+             var highlight = eventDates[date];
+             if( highlight ) {
+                  return [true, "event", highlight];
+             } else {
+                  return [true, '', ''];
+             }
+          },
+		    autoclose: true
+	});	 */
+	$("#b_country").on("change",function(){
+		
+		var countryId = $("#b_country").val();
+		var stateStr="<option value='0'>Select State</option>";
+		
+		$("#b_state").html(stateStr);
+		$("#b_city").html(stateStr);
+		$("#b_hospital").html(stateStr);
+		/* $("#b_department").html(stateStr); */
+		$("#b_datetimepicker").val("");
+		
+		if(Number(countryId) >0 ){
+			$("#black_overlay").fadeIn("slow");
+			$("#loader").fadeIn("slow");
+		
+	   	var BASE_CONTEXT_PATH = "/";
+	   	var urlStr =BASE_CONTEXT_PATH +"stateByCountryID";
+	  
+	   	$.ajax({
+	           type: "GET",
+	           contentType: "application/json",
+	           dataType: "json",
+	           url: urlStr+"?countryId="+countryId,
+	       })
+	       .done(function (response) {
+	           $.each(response, function (index, value) {
+
+	        	   stateStr += "<option value='"+value.id+"'>"+value.name+"</option>"
+	           })
+	           $("#b_state").html(stateStr);
+	           $("#loader").fadeOut("slow");
+		      $("#black_overlay").fadeOut("slow");
+	       })
+		}
+	})
+
+
+
+	$("#b_state").on("change",function(){
+		
+		var stateId = $("#b_state").val();
+		var stateStr="<option value='0'>Select City</option>";
+		
+		$("#b_city").html(stateStr);
+		$("#b_hospital").html(stateStr);
+		/* $("#b_department").html(stateStr); */
+		$("#b_datetimepicker").val("");
+		
+		if(Number(stateId) >0 ){
+			$("#black_overlay").fadeIn("slow");
+			$("#loader").fadeIn("slow");
+	   	var BASE_CONTEXT_PATH = "/";
+	   	var urlStr =BASE_CONTEXT_PATH +"cityByStateId";
+	  
+	   	$.ajax({
+	           type: "GET",
+	           contentType: "application/json",
+	           dataType: "json",
+	           url: urlStr+"?stateId="+stateId,
+	       })
+	       .done(function (response) {
+	           $.each(response, function (index, value) {
+
+	             
+	        	   stateStr += "<option value='"+value.id+"'>"+value.name+"</option>"
+	           })
+	           $("#b_city").html(stateStr);
+	           $("#loader").fadeOut("slow");
+			   $("#black_overlay").fadeOut("slow");
+
+	       })
+		}
+	})
+
+	$("#b_city").on("change",function(){
+		
+		var cityId = $("#b_city").val();
+		var stateStr="<option value='0'>Select Hospital</option>";
+		$("#b_hospital").html(stateStr);
+		/* $("#b_department").html(stateStr); */
+		$("#b_datetimepicker").val("");
+		
+		if(Number(cityId) >0 ){
+			$("#black_overlay").fadeIn("slow");
+			$("#loader").fadeIn("slow");
+	   	var BASE_CONTEXT_PATH = "/";
+	   	var urlStr =BASE_CONTEXT_PATH +"cityWiseHospList";
+	  
+	   	$.ajax({
+	           type: "GET",
+	           contentType: "application/json",
+	           dataType: "json",
+	           url: urlStr+"?cityId="+cityId,
+	       })
+	       .done(function (response) {
+	           $.each(response, function (index, value) {
+
+	             
+	        	   stateStr += "<option value='"+value.id+"'>"+value.hospitanName+"</option>"
+	           })
+	           $("#b_hospital").html(stateStr);
+	           $("#loader").fadeOut("slow");
+			   $("#black_overlay").fadeOut("slow");
+
+	       })
+		}
+	})
+
+
+	$("#b_hospital").on("change",function(){
+		
+		var hospitalId = $("#b_hospital").val();
+		var stateStr="<option value='0'>Select Department</option>";
+		/* $("#b_department").html(stateStr); */
+		$("#b_datetimepicker").val("");
+		
+		if(Number(hospitalId) >0 ){
+			$("#black_overlay").fadeIn("slow");
+			$("#loader").fadeIn("slow");
+	   	var BASE_CONTEXT_PATH = "/";
+	   	var urlStr =BASE_CONTEXT_PATH +"department/hdepartment";
+	  
+	   	$.ajax({
+	           type: "GET",
+	           contentType: "application/json",
+	           dataType: "json",
+	           url: urlStr+"?hospitalId="+hospitalId,
+	       })
+	       .done(function (response) {
+	           $.each(response, function (index, value) {
+
+	             
+	        	   stateStr += "<option value='"+value.id+"'>"+value.deptName+"</option>"
+	           })
+	          /*  $("#b_department").html(stateStr); */
+	           $("#loader").fadeOut("slow");
+			   $("#black_overlay").fadeOut("slow");
+	       })
+		}
+	})
+
+
+	/* $("#b_department").on("change",function(){
+		var availableDates=[];
+		availabilityDateArr = [];
+		var hospitalId = $("#b_hospital").val();
+		var departmentId = $("#b_department").val();
+		$("#b_datetimepicker").val("");
+		if(Number(hospitalId) >0  && Number(departmentId>0)){
+			$("#black_overlay").fadeIn("slow");
+			$("#loader").fadeIn("slow");
+		var stateStr = "";
+	   	var BASE_CONTEXT_PATH = "/";
+	   	var urlStr =BASE_CONTEXT_PATH +"appointment/availability";
+	  
+	   	$.ajax({
+	           type: "GET",
+	           contentType: "application/json",
+	           dataType: "json",
+	           url: urlStr+"?hospitalId="+hospitalId+"&departmentId="+departmentId,
+	       })
+	       .done(function (response) {
+	    	   
+	    	   highlightDatePicker(response);
+	    	   availabilityDateArr = response;  
+	           $("#loader").fadeOut("slow");
+			   $("#black_overlay").fadeOut("slow");
+	       })
+		}
+	}) */
+
+	$( "#b_datetimepicker" ).datepicker({
+	    autoclose: true,
+	    startDate: new Date()
+});
+
+	/*  $("#upload-file-input").on("change", uploadFile); */
+	 });
+	 
+function validateForm() {
+
+    // validate first name
+    
+    fillHiddenValue();
+    
+if($('input.departmentType:checkbox:checked').length<=0){
+		
+		alert("Please select at least one test");
+		return false;
+	}
+    if (document.getElementById('b_country').value == '0' || document.getElementById('b_country').value == 0)
+    {
+        alert("Please Select Country");
+        document.getElementById('b_country').focus();
+        return  false;
+    }
+    
+    if (document.getElementById('b_state').value == '0' || document.getElementById('b_state').value == 0)
+    {
+        alert("Please Select State");
+        document.getElementById('b_state').focus();
+        return  false;
+    }
+    
+    if (document.getElementById('b_city').value == '0' || document.getElementById('b_city').value == 0)
+    {
+        alert("Please Select City");
+        document.getElementById('b_city').focus();
+        return  false;
+    }
+    
+    if (document.getElementById('b_hospital').value == '0' || document.getElementById('b_hospital').value == 0)
+    {
+        alert("Please Select Hospital");
+        document.getElementById('b_hospital').focus();
+        return  false;
+    }
+    
+    /* if (document.getElementById('b_department').value == '0' || document.getElementById('b_department').value == 0)
+    {
+        alert("Please Select Department");
+        document.getElementById('b_department').focus();
+        return  false;
+    } */
+  
+    if (document.getElementById('b_datetimepicker').value == '')
+    {
+        alert("Please Select Date");
+        document.getElementById('b_datetimepicker').focus();
+        return  false;
+    }
+    
+   /*  if(availabilityDateArr.length ==  0){
+    	
+    	alert("Booking is not available for the selected hospital and department");
+        document.getElementById('b_datetimepicker').focus();
+        return  false;
+    }
+  
+    var selectedDate = $("#b_datetimepicker").val();
+    var selectedDateArr = selectedDate.split("/");
+    var selectedDateStr = selectedDateArr[2]+"-"+selectedDateArr[0]+"-"+selectedDateArr[1];
+   if(($.inArray(selectedDateStr, availabilityDateArr))<=-1){
+    	
+	   alert("Please Select Available Date");
+       document.getElementById('b_datetimepicker').focus();
+       return  false;
+	   
+    } */
+   
+    }
+   function fillHiddenValue(){
+		
+		var count = 0;
+		$(".departmentType").each(function(){
+			
+			if($(this).is(":checked")){
+			     
+				$("#testDetail"+count).attr("name","testList["+count+"]");
+				$("#testDetail"+count).val($(this).attr("id"));
+				count++;
+				
+				
+			}
+			
+		});
+	}
+</script>
+<div id="black_overlay"
+	style="width: 100%; height: 300%; background: #000; opacity: 0.6; z-index: 999; position: absolute; left: 0px; right: 0px; bottom: 0px; top: 0; display: none;">
+</div>
+</html>

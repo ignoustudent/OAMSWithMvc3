@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org" class="global xlarge">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>AdminLTE 2 | Starter</title>
+<!-- Tell the browser to be responsive to screen width -->
+<meta
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+	name="viewport">
+<link rel="stylesheet" th:href="@{../css/bootstrap.min.css}">
+<link rel="stylesheet" th:href="@{../css/bootstrap-theme.min.css}">
+
+<script th:src="@{../js/jquery.min.js}"></script>
+<script th:src="@{../js/bootstrap.min.js}"></script>
+<link rel="stylesheet" th:href="@{../css/font-awesome.min.css}">
+<!-- Ionicons -->
+<link rel="stylesheet" th:href="@{../css/ionicons.min.css}">
+<!-- Theme style -->
+<link rel="stylesheet" th:href="@{../css/AdminLTE.min.css}">
+<link rel="stylesheet" th:href="@{../css/skin-blue.min.css}">
+<link rel="stylesheet" th:href="@{../css/jquery.dataTables.min.css}">
+
+<style>
+@media ( min-width : 600px) {
+	.container {
+		max-width: 770px;
+	}
+}
+
+.success-div {
+	background-color: #00a65a;
+}
+</style>
+
+<!-- Google Font -->
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+</head>
+<!--
+BODY TAG OPTIONS:
+=================
+Apply one or more of the following classes to get the
+desired effect
+|---------------------------------------------------------|
+| SKINS         | skin-blue                               |
+|               | skin-black                              |
+|               | skin-purple                             |
+|               | skin-yellow                             |
+|               | skin-red                                |
+|               | skin-green                              |
+|---------------------------------------------------------|
+|LAYOUT OPTIONS | fixed                                   |
+|               | layout-boxed                            |
+|               | layout-top-nav                          |
+|               | sidebar-collapse                        |
+|               | sidebar-mini                            |
+|---------------------------------------------------------|
+-->
+<body class="hold-transition skin-blue sidebar-mini">
+	<div class="wrapper">
+
+
+
+		<header class="main-header">
+			<div th:include="fragments/secure_header :: header"></div>
+			<!-- Logo -->
+
+		</header>
+		<aside class="main-sidebar"
+			th:include="fragments/secure_leftslider :: left"></aside>
+		<section>
+			<!-- Content Wrapper. Contains page content -->
+			<div class="content-wrapper">
+				<!-- Content Header (Page header) -->
+				<section class="content-header">
+					<h1>
+						<!-- Please Select :- Hospital and Department -->
+						<!-- <small>Hospital and  Department</small> -->
+						<div class="alert success-div" role="alert" id="success_message"
+							background-color="green">
+							<b>Appointment History</b>
+						</div>
+					</h1>
+					<!-- <ol class="breadcrumb">
+					<li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
+					<li class="active">Here</li>
+				</ol> -->
+				</section>
+
+				<!-- Main content -->
+				<section class="content container-fluid">
+
+					<div>
+
+						<div class="table-responsive">
+							<th:block th:if="${!hList.empty}">
+							<table id="myTable" class="display table" width="100%">
+								<thead>
+									<tr>
+										<th>S.No</th>
+										<th>Hospital Name</th>
+										<th>Country</th>
+										<th>State</th>
+										<th>City</th>
+										<th>Contact</th>
+										<th>Edit</th>
+									</tr>
+								</thead>
+								<tbody>
+									<th:block th:each="hospital,itr:${hList}">
+										<tr>
+											<td th:text="${itr.index}+${1}"></td>
+											<td th:text="${hospital.hospitanName}"></td>
+										   <td th:text="${hospital.city.state.country.countryName}"></td>
+											<td th:text="${hospital.city.state.name}"></td>
+											<td th:text="${hospital.city.name}"></td>
+											<td th:text="${hospital.hContact}"></td>
+											<td><a th:href="@{/hospital/update?hospitalId=}+${hospital.id}"><i class="fa fa-edit"></i></a></td>
+										</tr>
+									</th:block>
+								</tbody>
+
+							</table>
+							
+							
+							
+							</th:block>
+						</div>
+					</div>
+				</section>
+			</div>
+
+		</section>
+		<!-- /.content -->
+	</div>
+	<footer class="main-footer"
+		th:include="fragments/secure_footer :: footer"> </footer>
+
+	<!-- Control Sidebar -->
+	<aside class="control-sidebar control-sidebar-dark"
+		th:include="fragments/secure_rightslider :: right">Create the
+		tabs</aside>
+	<div class="control-sidebar-bg"></div>
+	</div>
+
+	<!-- Bootstrap 3.3.7 -->
+
+	<!-- AdminLTE App -->
+	<script th:src="@{../js/adminlte.min.js}"></script>
+
+	<!-- Optionally, you can add Slimscroll and FastClick plugins.
+     Both of these plugins are recommended to enhance the
+     user experience. -->
+
+</body>
+
+<script>
+	/* $(document).ready(function() {
+	 $("#upload-file-input").on("change", uploadFile);
+	 });	
+
+	 function uploadFile() {
+	 $.ajax({
+	 url: "/uploadimage",
+	 type: "POST",
+	 data: new FormData($("#upload-file-form")[0]),
+	 enctype: 'multipart/form-data',
+	 processData: false,
+	 contentType: false,
+	 cache: false,
+	 success: function () {
+	 // Handle upload success
+	 // ...
+	 },
+	 error: function () {
+	 // Handle upload error
+	 // ...
+	 }
+	 });
+	 } */
+	/* $("#profileImg").on("click",function(){
+	
+	
+	
+	 }) */
+</script>
+<script th:src="@{../js/jquery.dataTables.min.js}"></script>
+<script type="text/javascript">
+	/* 
+	 $("#b_country").on("change",function(){
+	
+	 var countryId = $("#b_country").val();
+	
+	 if(Number(countryId) >0 ){
+	 var stateStr="<option value='0'>Select State</option>";
+	 var BASE_CONTEXT_PATH = "/";
+	 var urlStr =BASE_CONTEXT_PATH +"stateByCountryID";
+	
+	 $.ajax({
+	 type: "GET",
+	 contentType: "application/json",
+	 dataType: "json",
+	 url: urlStr+"?countryId="+countryId,
+	 })
+	 .done(function (response) {
+	 $.each(response, function (index, value) {
+
+	
+	 stateStr += "<option value='"+value.id+"'>"+value.name+"</option>"
+	 })
+	 $("#b_state").html(stateStr);
+	 })
+	 }
+	 })
+
+
+
+	 $("#b_state").on("change",function(){
+	
+	 var stateId = $("#b_state").val();
+	
+	 if(Number(stateId) >0 ){
+	 var stateStr="<option value='0'>Select City</option>";
+	 var BASE_CONTEXT_PATH = "/";
+	 var urlStr =BASE_CONTEXT_PATH +"cityByStateId";
+	
+	 $.ajax({
+	 type: "GET",
+	 contentType: "application/json",
+	 dataType: "json",
+	 url: urlStr+"?stateId="+stateId,
+	 })
+	 .done(function (response) {
+	 $.each(response, function (index, value) {
+
+	
+	 stateStr += "<option value='"+value.id+"'>"+value.name+"</option>"
+	 })
+	 $("#b_city").html(stateStr);
+	 })
+	 }
+	 })
+
+	 $("#b_city").on("change",function(){
+	
+	 var cityId = $("#b_city").val();
+	
+	 if(Number(cityId) >0 ){
+	 var stateStr="<option value='0'>Select Hospital</option>";
+	 var BASE_CONTEXT_PATH = "/";
+	 var urlStr =BASE_CONTEXT_PATH +"cityWiseHospList";
+	
+	 $.ajax({
+	 type: "GET",
+	 contentType: "application/json",
+	 dataType: "json",
+	 url: urlStr+"?cityId="+cityId,
+	 })
+	 .done(function (response) {
+	 $.each(response, function (index, value) {
+
+	
+	 stateStr += "<option value='"+value.id+"'>"+value.hospitanName+"</option>"
+	 })
+	 $("#b_hospital").html(stateStr);
+	 })
+	 }
+	 })
+
+
+	 $("#b_hospital").on("change",function(){
+	
+	 var hospitalId = $("#b_hospital").val();
+	
+	 if(Number(hospitalId) >0 ){
+	 var stateStr="<option value='0'>Select Department</option>";
+	 var BASE_CONTEXT_PATH = "/";
+	 var urlStr =BASE_CONTEXT_PATH +"department/hdepartment";
+	
+	 $.ajax({
+	 type: "GET",
+	 contentType: "application/json",
+	 dataType: "json",
+	 url: urlStr+"?hospitalId="+hospitalId,
+	 })
+	 .done(function (response) {
+	 $.each(response, function (index, value) {
+
+	
+	 stateStr += "<option value='"+value.id+"'>"+value.deptName+"</option>"
+	 })
+	 $("#b_department").html(stateStr);
+	 })
+	 }
+	 }) */
+
+	/* $(function() {
+	 $('#b_datetimepicker').datetimepicker({
+	 viewMode : 'years',
+	 format : 'MM/YYYY'
+	 });
+	 });
+	 */
+
+	$(document).ready(function() {
+		$('#myTable').dataTable();
+	});
+</script>
+
+</html>
