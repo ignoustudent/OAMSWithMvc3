@@ -13,4 +13,7 @@ import com.oams.app.entities.Staff;
 public interface StaffService {
 
 	Staff getStaffByEmail(String email);
+
+	
+	void updateStaff(Staff staff);
 }

@@ -27,4 +27,12 @@ public class StaffServiceImpl implements StaffService{
 		return staffDao.getStaffByEmail(email);
 	}
 
+	
+	@Override
+	public void updateStaff(Staff staff) {
+		
+		staffDao.save(staff);
+		
+	}
+
 }

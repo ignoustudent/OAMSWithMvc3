@@ -74,11 +74,22 @@ public class HomeController {
 		String base64Str = "";
 		logger.info("uploading file :- {}",uploadfile.getOriginalFilename());
 		try{
-			
+			String userRole = (String) modelMap.get("userRole");
+			if(userRole.equalsIgnoreCase("ADMIN")){
+				
+			Staff staff = (Staff) modelMap.get("loggedInUser");
+			staff.setImage(uploadfile.getBytes());
+			staffService.updateStaff(staff);
+			base64Str =  new String(Base64.getEncoder().encodeToString(staff.getImage()));
+			modelMap.addAttribute("loggedInUser",staff);
+			}else{
 			Patient patient = (Patient) modelMap.get("loggedInUser");
 			patient.setImage(uploadfile.getBytes());
 			patientService.updatePatient(patient);
 			base64Str =  new String(Base64.getEncoder().encodeToString(patient.getImage()));
+			modelMap.addAttribute("loggedInUser",patient);
+			}
+			
 		}catch(Exception e){
 		
 			logger.error("Error occurred while uploading file{}",e.getMessage());
