@@ -3,6 +3,8 @@
  */
 package com.oams.app.service;
 
+import java.util.List;
+
 import com.oams.app.entities.BookingCapacity;
 
 /**
@@ -13,4 +15,9 @@ import com.oams.app.entities.BookingCapacity;
 public interface BookingCapacityService {
 
 	public void save(BookingCapacity capacity);
+
+	
+	public BookingCapacity getCapacityByHandDId(Integer id, Integer id2);
+
+	public List<BookingCapacity> getAllCapacity();
 }

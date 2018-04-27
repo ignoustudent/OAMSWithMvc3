@@ -149,7 +149,7 @@ desired effect
                         
                          <div class="col-md-4">
 						<label>Capacity</label>
-		                 <select id="b_state"
+		                 <select id="b_capacity"
 						 class="form-control selectpicker"  th:field="*{maxBookingPerDay}">
 						 <option th:value="0">Select Capacity</option>
 						<option th:value="1">1</option>
@@ -181,18 +181,18 @@ desired effect
 								<thead>
 									<tr>
 										<th>S.No</th>
+										<th>Hospital Name</th>
 										<th>Department Name</th>
 										<th>Capacity</th>
-										<th>update</th>
 									</tr>
 								</thead>
 								<tbody>
-									<th:block th:each="notificationDetail,itr:${notificationList}">
+									<th:block th:each="capacity,itr:${capacityList}">
 										<tr>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td><a th:href="#">update</a></td>
+											<td th:text="${itr.index}+${1}"></td>
+											<td th:text="${capacity.hospital.hospitanName}"></td>
+											<td th:text="${capacity.department.deptName}"></td>
+											<td th:text="${capacity.maxBookingPerDay}"></td>
 										</tr>
 									</th:block>
 								</tbody>
@@ -391,6 +391,51 @@ desired effect
 		})
 
 
+		function validateForm(){
+			
+			
+			 if (document.getElementById('b_country').value == '0' || document.getElementById('b_country').value == 0)
+			    {
+			        alert("Please Select Country");
+			        document.getElementById('b_country').focus();
+			        return  false;
+			    }
+			    
+			    if (document.getElementById('b_state').value == '0' || document.getElementById('b_state').value == 0)
+			    {
+			        alert("Please Select State");
+			        document.getElementById('b_state').focus();
+			        return  false;
+			    }
+			    
+			    if (document.getElementById('b_city').value == '0' || document.getElementById('b_city').value == 0)
+			    {
+			        alert("Please Select City");
+			        document.getElementById('b_city').focus();
+			        return  false;
+			    }
+			    
+			    if (document.getElementById('b_hospital').value == '0' || document.getElementById('b_hospital').value == 0)
+			    {
+			        alert("Please Select Hospital");
+			        document.getElementById('b_hospital').focus();
+			        return  false;
+			    }
+			    
+			    if (document.getElementById('b_department').value == '0' || document.getElementById('b_department').value == 0)
+			    {
+			        alert("Please Select Department");
+			        document.getElementById('b_department').focus();
+			        return  false;
+			    }
+			    
+			    if (document.getElementById('b_capacity').value == '0' || document.getElementById('b_capacity').value == 0)
+			    {
+			        alert("Please Select Capacity");
+			        document.getElementById('b_capacity').focus();
+			        return  false;
+			    }
+		}
 </script>
 <div id="loader" style="width: 400px; height: 70px; border: 4px solid #999; border-radius: 8px 8px 8px 8px; z-index: 9999; position: absolute; left: 40%; right: 0px; bottom: 0px; top: 50%; display: none; background: #fff; padding: 13px;">
 Please wait <img th:src="@{../images/ajax-loader.gif}"

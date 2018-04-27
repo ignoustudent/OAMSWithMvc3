@@ -3,6 +3,8 @@
  */
 package com.oams.app.dao;
 
+import java.util.List;
+
 import com.oams.app.entities.BookingCapacity;
 
 /**
@@ -15,4 +17,7 @@ public interface BookingCapacityDao {
 	public BookingCapacity getCapacityByHosAndDeptId(Integer hospitalId,Integer deptId);
 
 	public void save(BookingCapacity capacity);
+
+	public List<BookingCapacity> getAllCapacity();
+
 }

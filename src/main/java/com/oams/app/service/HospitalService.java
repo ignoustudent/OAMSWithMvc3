@@ -5,6 +5,8 @@ package com.oams.app.service;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import com.oams.app.entities.Hospital;
 
 /**
@@ -21,5 +23,8 @@ public interface HospitalService {
 	public List<Hospital> geAllHospital();
 
 	public Hospital getHospitalById(Integer id);
+
+	
+	public void updateHospital(Hospital hospital);
 }
 

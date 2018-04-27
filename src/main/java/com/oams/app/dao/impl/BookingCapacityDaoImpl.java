@@ -9,6 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
+import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
 import com.oams.app.dao.BookingCapacityDao;
@@ -30,7 +31,7 @@ public class BookingCapacityDaoImpl implements BookingCapacityDao{
 	@Override
 	public BookingCapacity getCapacityByHosAndDeptId(Integer hospitalId,Integer deptId) {
 		List<BookingCapacity> capacities = entityManager.createNamedQuery("getCapacityByHosAndDeptId",BookingCapacity.class).setParameter(1, hospitalId).setParameter(2, deptId).getResultList();
-		
+		entityManager.clear();
 		if(capacities != null && capacities.size()>0){
 			return capacities.get(0);
 		}
@@ -40,8 +41,18 @@ public class BookingCapacityDaoImpl implements BookingCapacityDao{
 	@Override
 	public void save(BookingCapacity capacity) {
 		
-		entityManager.persist(capacity);
+		Session session = (Session) entityManager.getDelegate();
+		session.saveOrUpdate(capacity);
+		session.close();
+		//entityManager.persist(capacity);
 		
+	}
+
+	
+	@Override
+	public List<BookingCapacity> getAllCapacity() {
+
+		return entityManager.createQuery("from BookingCapacity order by id desc").getResultList();
 	}
 	
 	

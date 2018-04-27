@@ -22,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.oams.app.entities.BookingCapacity;
 import com.oams.app.entities.Country;
+import com.oams.app.entities.Department;
 import com.oams.app.entities.Hospital;
 import com.oams.app.entities.Staff;
 import com.oams.app.service.BookingCapacityService;
@@ -83,8 +84,27 @@ public class HospitalController {
 		
 		try{
 			
-			hospitalService.addHospital(hospital);
+			if(hospital.getId() ==null){
+				hospitalService.addHospital(hospital);
 			redirectAttributes.addFlashAttribute("msg","Hospital Added Successfully");
+			}
+			else if(hospital.getId() != null){
+				hospitalService.updateHospital(hospital);
+				
+				/*for(Department department : hospital.getDepartmentList()){
+					
+				BookingCapacity capacity = bookingCapacityService.getCapacityByHandDId(hospital.getId(), department.getId());
+				if(capacity == null || capacity.getId() == null){
+					
+					continue;
+				}else{
+					
+					
+				}
+				}*/
+				redirectAttributes.addFlashAttribute("msg","Hospital Updated SuccessFully");
+			}
+			
 		}catch(Exception e){
 			
 			e.printStackTrace();
@@ -100,17 +120,27 @@ public String hdCapacityPage(ModelMap map){
 	
 	map.addAttribute("bookingCapacity",new BookingCapacity());
 	List<Country>countries = (List<Country>) countryService.getCountries();
+	List<BookingCapacity> capacityList = bookingCapacityService.getAllCapacity();
+	map.addAttribute("capacityList",capacityList);
 	map.addAttribute("countries",countries);
 	return "booking_capacity";
 }
+
 
 @RequestMapping(value="/department/capacity",method=RequestMethod.POST)
 public String addCapacity(@Valid @ModelAttribute("bookingCapacity")BookingCapacity bookingCapacity,ModelMap map, RedirectAttributes redirectAttribute){
 	
 	try{
+		BookingCapacity savedCapacity =null;
 		
+		savedCapacity= bookingCapacityService.getCapacityByHandDId(bookingCapacity.getHospital().getId(), bookingCapacity.getDepartment().getId());
+		if(savedCapacity != null && savedCapacity.getId() != null){
+			
+			bookingCapacity.setId(savedCapacity.getId());
+			
+		}
 		bookingCapacityService.save(bookingCapacity);
-		redirectAttribute.addAttribute("msg","Capacity Added Successfully");
+		redirectAttribute.addFlashAttribute("msg","Capacity Added Successfully");
 		
 	}catch(Exception e){
 		

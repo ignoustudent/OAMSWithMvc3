@@ -24,4 +24,6 @@ public interface HospitalDao {
 	public void addHospital(Hospital hospital);
 	
 	public List<Hospital> geAllHospital();
+
+	public void updateHospital(Hospital hospital);
 }

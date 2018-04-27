@@ -9,9 +9,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
+import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
 import com.oams.app.dao.HospitalDao;
+import com.oams.app.entities.Department;
 import com.oams.app.entities.Hospital;
 
 /**
@@ -42,6 +44,9 @@ public class HospitalDaoImpl implements HospitalDao{
 	@Override
 	public void addHospital(Hospital hospital) {
 		
+		if(hospital.getId() != null)
+		entityManager.merge(hospital);
+		else
 		entityManager.persist(hospital);
 	}
 
@@ -50,6 +55,21 @@ public class HospitalDaoImpl implements HospitalDao{
 	public List<Hospital> geAllHospital() {
 		
 		return entityManager.createQuery("from Hospital order by id desc").getResultList();
+	}
+
+	@Override
+	public void updateHospital(Hospital hospital) {
+		
+		for(Department dept : hospital.getDepartmentList()){
+			
+			dept.getHospitalList().add(hospital);
+		}
+		
+	   Session session =(Session) entityManager.getDelegate();
+	   
+		session.saveOrUpdate(hospital);
+		session.close();
+		
 	}
 
 }

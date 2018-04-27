@@ -5,6 +5,8 @@ package com.oams.app.service.impl;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -53,6 +55,14 @@ public class HospitalServiceImpl implements HospitalService{
 	public Hospital getHospitalById(Integer id) {
 		
 		return hospitalDao.getHospitalById(id);
+	}
+
+	
+	@Override
+	public void updateHospital(Hospital hospital) {
+		 
+		hospitalDao.updateHospital(hospital);
+		
 	}
 
 }

@@ -197,7 +197,7 @@ desired effect
 						th:action="@{/hospital/register}"
 						th:object="${hospital}" th:role="form" method="post"
 						enctype="multipart/form-data">
-						<input th:type="hidden"   th:field="*{id}">
+						<input id="hospitalId" th:type="hidden"   th:field="*{id}">
 						<fieldset>
 
 							<!-- Form Name -->
@@ -235,14 +235,14 @@ desired effect
                                 <hr/>
                                <h4 style="color:orange"><b>Select Departments</b></h4>
                                
+                               
                                <th:block th:each="department,itr:${departments}">
                                 <div class="form-check col-md-4">
                                 
-                              <!--   <input type="checkbox" th:field="*{departmentList[__${itr.index}__]}" th:value="${department.id}"  /> -->
-										 <input type="checkbox" checked="checked" class="form-check-input departmentType"
+                            			  <input type="checkbox" class="form-check-input departmentType"
 											th:id="${department.id}"> <label class="form-check-label"  
 											for="exampleCheck1" th:text="${department.deptName}" th:value="${department.id}"> </label>
-											<input th:type="hidden" class ="departmentTypeHidden"  th:id="'department'+${itr.index}"> <!-- th:field="*{departmentList[__${itr.index}__]}" -->
+											<input th:type="hidden" class ="departmentTypeHidden"  th:id="'department'+${itr.index}">
 									</div>
 									
 									</th:block>
@@ -264,6 +264,7 @@ desired effect
 											class="glyphicon glyphicon-user"></i></span> <input
 											th:field="*{hContact}" placeholder="Hospital Contact"
 											class="form-control" type="number" id  ="hContact">
+											<input type="hidden" th:field="*{city.id}"/>
 									</div>
 								</div>
 							</div>
@@ -434,6 +435,37 @@ desired effect
     });
 }); */
 
+function getHospitalDepartment(){
+	
+		
+		var hospitalId = $("#hospitalId").val();
+		if(Number(hospitalId) >0 ){
+			$("#black_overlay").fadeIn("slow");
+			$("#loader").fadeIn("slow");
+	   	var BASE_CONTEXT_PATH = "/";
+	   	var urlStr =BASE_CONTEXT_PATH +"department/hdepartment";
+	  
+	   	$.ajax({
+	           type: "GET",
+	           contentType: "application/json",
+	           dataType: "json",
+	           url: urlStr+"?hospitalId="+hospitalId,
+	       })
+	       .done(function (response) {
+	    	   
+	    	  
+	           $.each(response, function (index, value) {
+	        	   $("#"+value.id).attr("checked",true);
+	        	   
+	           })
+	           $("#loader").fadeOut("slow");
+			   $("#black_overlay").fadeOut("slow");
+	       })
+		}
+}
+
+getHospitalDepartment();
+
 $("#b_country").on("change",function(){
 	
 	var countryId = $("#b_country").val();
@@ -508,43 +540,9 @@ $("#b_country").on("change",function(){
 		}
 	})
 
-	/* $("#b_city").on("change",function(){
-		
-		var cityId = $("#b_city").val();
-		var stateStr="<option value='0'>Select Hospital</option>";
-		$("#b_hospital").html(stateStr);
-		$("#b_department").html(stateStr);
-		$("#b_datetimepicker").val("");
-		
-		if(Number(cityId) >0 ){
-			$("#black_overlay").fadeIn("slow");
-			$("#loader").fadeIn("slow");
-	   	var BASE_CONTEXT_PATH = "/";
-	   	var urlStr =BASE_CONTEXT_PATH +"cityWiseHospList";
-	  
-	   	$.ajax({
-	           type: "GET",
-	           contentType: "application/json",
-	           dataType: "json",
-	           url: urlStr+"?cityId="+cityId,
-	       })
-	       .done(function (response) {
-	           $.each(response, function (index, value) {
-
-	             
-	        	   stateStr += "<option value='"+value.id+"'>"+value.hospitanName+"</option>"
-	           })
-	           $("#b_hospital").html(stateStr);
-	           $("#loader").fadeOut("slow");
-			   $("#black_overlay").fadeOut("slow");
-
-	       })
-		}
-	}) */
-
 	function validateForm(){
 	
-	/* setCollectionName(); */
+
 	fillHiddenValue();
 	
 	if (document.getElementById('hName').value == '' || $("#hName").val().trim().length<=0)

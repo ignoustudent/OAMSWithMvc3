@@ -21,6 +21,7 @@ import javax.persistence.NamedNativeQueries;
 import javax.persistence.NamedNativeQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -58,8 +59,11 @@ public class Hospital {
 	private List<Department> departmentList =new ArrayList<>();
 
 	@OneToMany(cascade=CascadeType.ALL, mappedBy="hospital")
-	private List<Doctor>doctors;
+	private List<Doctor>doctors = new ArrayList<>();
 	
+	
+	@Transient
+	private List<BookingCapacity> capacityList;
 	public Integer getId() {
 		return id;
 	}
@@ -115,6 +119,16 @@ public class Hospital {
 
 	public void sethContact(String hContact) {
 		this.hContact = hContact;
+	}
+
+	
+	
+	public List<BookingCapacity> getCapacityList() {
+		return capacityList;
+	}
+
+	public void setCapacityList(List<BookingCapacity> capacityList) {
+		this.capacityList = capacityList;
 	}
 
 	@Override

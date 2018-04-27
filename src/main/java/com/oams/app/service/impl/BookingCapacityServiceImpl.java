@@ -3,6 +3,8 @@
  */
 package com.oams.app.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +28,20 @@ public class BookingCapacityServiceImpl implements BookingCapacityService{
 		
 		bookingCapacityDao.save(capacity);
 		
+	}
+
+	
+	@Override
+	public BookingCapacity getCapacityByHandDId(Integer id, Integer id2) {
+	
+		return bookingCapacityDao.getCapacityByHosAndDeptId(id,id2);
+
+	}
+
+	@Override
+	public List<BookingCapacity> getAllCapacity() {
+		
+		return bookingCapacityDao.getAllCapacity();
 	}
 
 	
